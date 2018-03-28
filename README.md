@@ -1,7 +1,7 @@
 # Scoreboard
 Grace Bushong
 Homework #4
-Resubmission: September 20, 2017
+September 20, 2017
 
 My controller.html file controls my display.html file.
 For the Team name row, the user can enter in the home team and the away team and then hit submit in order to update the display. Both update at once, so if one contains no value, the other will show up blank.
