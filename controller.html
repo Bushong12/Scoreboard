@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE-edge">
+        <meta name="viewport" content="width=device-width, inital-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
+
+        <title>Scoreboard Controller</title>
+
+        <!--Bootstrap core CSS -->
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="main1.css">
+
+        <!--Custom styles for this template-->
+        <!-- <link href="starter-template.css" rel="stylesheet">-->
+
+        <!-- Just for debugging purposes. Don't actually copy this line! -->
+        <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries-->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="container">
+
+            <!--Column Labels-->
+            <div class="row boxed">
+                <div class="col-md-3">
+                    <p><b>Action</b></p>
+                </div>
+                <div class="col-md-6">
+                    <p><b>Fields</b></p>
+                </div>
+                <div class="col-md-3">
+                    <p><b>Submit</b></p>
+                </div>
+            </div>
+
+            <!--Home Team Name-->
+            <div class="row boxed">
+                <div class="col-md-3">
+                    <p>Team Names</p>
+                </div>
+                <div class="col-md-6">
+                    <!--Form box-->
+                    <input type="text" id="homeName">Home</input>
+                    <input type="test" id="awayName">Away</input>
+                </div>
+                <div class="col-md-3">
+                    <!--need to send info from homeTeamName to homeName()-->
+                    <button id="teamNameButton">Submit</button>
+                </div>
+            </div>
+
+            <!--Possession Arrow-->
+            <div class="row boxed">
+                <div class="col-md-3 ">
+                    <p>Possession</p>
+                </div>
+                <div class="col-md-6">
+                    <button id="homePossessionButton">Home</button>
+                    <button id="awayPossessionButton">Away</button>
+                    <!--add buttons for team 1 or team 2-->
+                </div>
+                <div class="col-md-3">
+                </div>
+            </div>
+
+            <!--Home Team Score-->
+            <div class="row boxed">
+                <div class="col-md-3">
+                    <p>Team Score</p>
+                </div>
+                <div class="col-md-6">
+                    <!--Form box-->
+                    <input type="text" id="homeScore">Home</input>
+                    <input type="text" id="awayScore">Away</input>
+                </div>
+                <div class="col-md-3">
+                    <!--Need to figure out how to pass the contents of the form box-->
+                    <button id="teamScoreButton">Submit</button>
+                </div>
+            </div>
+
+            <!--Period Indicator-->
+            <div class="row boxed">
+                <div class="col-md-3">
+                    <p>Period</p>
+                </div>
+                <div class="col-md-6">
+                    <button id="period1">1</button>
+                    <button id="period2">2</button>
+                    <button id="period3">3</button>
+                    <button id="period4">4</button>
+                    <button id="periodOT">OT</button>
+                </div>
+                <div class="col-md-3">
+                </div>
+            </div>
+
+            <!--Clock-->
+            <div class="row boxed">
+                <div class="col-md-3">
+                    <p>Time on Clock</p>
+                </div>
+                <div class="col-md-6">
+                    <!--Direct insert time on clock-->
+                    <input type="text" id="clock"></input>
+                    <button id="clockButton">Submit</button>
+                </div>
+                <div class="col-md-3">
+                </div>
+            </div>
+
+            <!--Play/ Pause-->
+            <div class="row boxed">
+                <div class="col-md-3">
+                    <p>Run Clock</p>
+                </div>
+                <div class="col-md-6">
+                    <!--Choose to play/pause-->
+                    <button id="clockRunButton">Play</button>
+                    <button id="clockStopButton">Pause</button>
+                </div>
+                <div class="col-md-3">
+                </div>
+            </div>
+
+            <!--Home Timeouts-->
+            <div class="row boxed">
+                <div class="col-md-3">
+                    <p>Timeouts Remaining (0-3)</p>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" id="homeTimeouts">Home</input>
+                    <input type="text" id="awayTimeouts">Away</input>
+                </div>
+                <div class="col-md-3">
+                    <button id="totalTimeouts">Submit</button>
+                </div>
+            </div>
+
+            <!--Home Total Yards-->
+            <div class="row boxed">
+                <div class="col-md-3">
+                    <p>Total Yards</p>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" id="homeYards"></input>
+                    <input type="text" id="awayYards"></input>
+                </div>
+                <div class="col-md-3">
+                    <button id="teamYardsButton">Submit</button>
+                </div>
+            </div>
+
+            <!--Recent Plays-->
+            <div class="row boxed">
+                <div class="col-md-3">
+                    <p>New Play</p>
+                </div>
+                <div class="col-md-6">
+                    <!-- add input for play text-->
+                    <input type="text" id="recentPlay"></input>
+                </div>
+                <div class="col-md-3">
+                    <!-- add submit button-->
+                    <button id="recentPlayButton">Submit</button>
+                </div>
+            </div>
+
+        </div>
+
+        <!--Bootstrap core JavaScript
+        =================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> -->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+        <!-- Include socket file from this domain. -->
+        <script src="http://socketio.minilabs.co/socket.io/socket.io.js"></script>
+        <script>
+   
+            $(function() {
+                // Create the socket on this domain!
+                var socket = io('http://socketio.minilabs.co');
+
+                //pick id that is unique. id must be the same for both pages.
+                var id = 'gbushong';
+
+                //Register your id.
+                socket.emit('register', id);
+
+                // write 4 buttons with click events
+                // when button 1 is clicked, it uses the socket object to 'emit' a message to channel 'gbushong-period' with value of 1. This message will then be sent to the 'socket service' at 'socketio.minilabs.co' and then be sent to anyone listening on that channel
+
+                var home_timeouts = 0, away_timeouts = 0;
+
+                // Team Name
+                $("#teamNameButton").click(function() {
+                    var team1 = document.getElementById('homeName').value;
+                    var team2 = document.getElementById('awayName').value;
+                    console.log(team1 + " " + team2);
+                    socket.emit(id + '-teams', {Home: team1, Away: team2});
+                });
+
+                // Possession Arrow
+                $("#homePossessionButton").click(function() {
+                    // 1 indicates home possession
+                    console.log("Home Poss");
+                    socket.emit(id + '-possession', "1");
+                });
+                $("#awayPossessionButton").click(function() {
+                    // 0 indicates away possession
+                    console.log("Away Poss");
+                    socket.emit(id + '-possession', "0");
+                });
+
+                // Team Score
+                $("#teamScoreButton").click(function() {
+                    var data1 = document.getElementById('homeScore');
+                    var data2 = document.getElementById('awayScore');
+                    console.log(data1.value + " " + data2.value);
+                    socket.emit(id + '-score', {Home: data1.value, Away: data2.value});
+                });
+
+                // Period Indicator
+
+                $("#period1").click(function() {
+                    console.log(id + '-period' + '1');
+                    socket.emit(id + '-period', "1");
+                });
+
+                $("#period2").click(function() {
+                    console.log(id + '-period' + "2");
+                    socket.emit(id + '-period', "2");
+                });
+
+                $("#period3").click(function() {
+                    console.log(id + '-period' + "3");
+                    socket.emit(id + '-period', "3");
+                });
+
+                $("#period4").click(function() {
+                    console.log(id + '-period' + "4");
+                    socket.emit(id + '-period', "4");
+                });
+
+                $("#periodOT").click(function() {
+                    console.log(id + '-period' + "OT");
+                    socket.emit(id + '-period', "OT");
+                });
+
+                // Clock
+                $("#clockButton").click(function() {
+                    // Set the clock time
+                    var data = document.getElementById('clock').value;
+                    console.log("Time: " + data);
+                    socket.emit(id + '-clock', data);
+                });
+
+                $("#clockRunButton").click(function() {
+                    //Start the clock
+                    socket.emit(id + '-play', 1);
+                });
+
+                $("#clockStopButton").click(function() {
+                    //Stop the Clock
+                    socket.emit(id + '-play', 0);
+                })
+
+                // Timeouts
+                $("#totalTimeouts").click(function() {
+                    var data1 = document.getElementById("homeTimeouts").value;
+                    var data2 = document.getElementById("awayTimeouts").value;
+                    console.log(data1 + " " + data2);
+                    socket.emit(id + '-timeouts', {Home: data1, Away: data2});
+                });
+
+                $("#home3timeouts").click(function() {
+                    home_timeouts = 3;
+                    console.log("3 Home T/o");
+                    socket.emit(id + '-timeouts', {Home: "3", Away: away_timeouts});
+                });
+
+                $("#home2timeouts").click(function() {
+                    home_timeouts = 2;
+                    console.log("2 Home T/o");
+                    socket.emit(id + '-timeouts', {Home: "2", Away: away_timeouts});
+                });
+                $("#home1timeouts").click(function() {
+                    home_timeouts = 1;
+                    console.log("1 Home T/o");
+                    socket.emit(id + '-timeouts', {Home: "1", Away: away_timeouts});
+                });
+                $("#home0timeouts").click(function() {
+                    home_timeouts = 0;
+                    console.log("0 Home T/o");
+                    socket.emit(id + '-timeouts', {Home: "0", Away: away_timeouts});
+                });
+
+                // away timeouts
+                $("#away3timeouts").click(function() {
+                    away_timeouts = 3;
+                    console.log("3 Away T/o");
+                    socket.emit(id + '-timeouts', {Away: "3", Home: home_timeouts});
+                });
+                $("#away2timeouts").click(function() {
+                    away_timeouts = 2;
+                    console.log("2 Away T/o");
+                    socket.emit(id + '-timeouts', {Away: "2", Home: home_timeouts});
+                });
+                $("#away1timeouts").click(function() {
+                    away_timeouts = 1;
+                    console.log("1 Away T/o");
+                    socket.emit(id + '-timeouts', {Away: "1", Home: home_timeouts});
+                });
+                $("#away0timeouts").click(function() {
+                    away_timeouts = 0;
+                    console.log("0 Away T/o");
+                    socket.emit(id + '-timeouts', {Away: "0", Home: home_timeouts});
+                });
+
+                // Total Yards
+                $("#teamYardsButton").click(function() {
+                    var data1 = document.getElementById('homeYards');
+                    var data2 = document.getElementById('awayYards');
+                    console.log(data1.value + " " + data2.value);
+                    socket.emit(id + '-yards', {Home: data1.value, Away: data2.value});
+                });
+
+
+                // Recent Plays
+                $("#recentPlayButton").click(function() {
+                    var data = document.getElementById('recentPlay');
+                    console.log(data.value);
+                    socket.emit(id + '-plays', data.value);
+                });
+            });
+        </script>
+
+    </body>
+</html>

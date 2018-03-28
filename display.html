@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE-edge">
+        <meta name="viewport" content="width=device-width, inital-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
+
+        <title>Scoreboard Display</title>
+
+        <!--Bootstrap core CSS -->
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="main.css">
+
+        <!--Custom styles for this template-->
+        <!-- <link href="starter-template.css" rel="stylesheet">-->
+
+        <!-- Just for debugging purposes. Don't actually copy this line! -->
+        <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries-->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <header>
+            <br />
+            <br />
+        </header>
+        <div class="container boxed">
+
+            <!--Team Names-->
+            <div class="row">
+                <div class="col-md-offset-2 col-md-3 boxed" id="home-team">
+                    <div id="home-team">
+                        Home
+                    </div>
+                </div>
+                <div class="col-md-1" id="possession">
+                    <i class="arrow left" id="left"></i>
+                </div>
+                <div class="col-md-1" id="possession">
+                    <i class="arrow right" id="right"></i>
+                </div>
+                <div class="col-md-3 boxed" id="away-team">
+                    Away
+                </div>
+            </div>
+
+            <!--Team Scores-->
+            <div class="row">
+                <div class="col-md-offset-3 col-md-1 boxed" id="home-score">
+                    <p>0</p>
+                </div>
+                <div class="col-md-offset-4 col-md-1 boxed" id="away-score">
+                    <p>0</p>
+                </div>
+            </div>
+
+            <!--Period Indicator-->
+            <div class="row">
+                <div class="col-md-offset-3 col-md-1" id="period-1">
+                    <p>1</p>
+                </div>
+                <div class="col-md-1" id="period-2">
+                    <p>2</p>
+                </div>
+                <div class="col-md-1" id="period-3">
+                    <p>3</p>
+                </div>
+                <div class="col-md-1" id="period-4">
+                    <p>4</p>
+                </div>
+                <div class ="col-md-1" id="period-OT">
+                    <p>OT</p>
+                </div>
+            </div>
+
+            <!--Clock-->
+            <div class="row">
+                <div class="col-md-offset-5 col-md-2 boxed" id="clock">
+                    <p>00:00</p>
+                </div>
+            </div>
+            <br />
+
+            <!--Timeouts-->
+            <div class="row">
+                <!--Home Timeouts-->
+                <div class="col-md-offset-2 col-md-1">
+                    <div class="circle" id="home-timeouts3"></div>
+                </div>
+                <div class="col-md-1" >
+                    <div class="circle" id="home-timeouts2"></div>
+                </div>
+                <div class="col-md-1" >
+                    <div class="circle" id="home-timeouts1"></div>
+                </div>
+
+                <!--Away Timeouts-->
+                <div class="col-md-offset-2 col-md-1" >
+                    <div class="circle" id="away-timeouts3"></div>
+                </div>
+                <div class="col-md-1" >
+                    <div class="circle" id="away-timeouts2"></div>
+                </div>
+                <div class="col-md-1" >
+                    <div class="circle" id="away-timeouts1"></div>
+                </div>
+            </div>
+
+            <!--Total Yards-->
+            <div class="row">
+                <br />
+                <div id="bar">
+                </div>
+            </div>
+
+            <!--Recent Plays-->
+            <div class="play-ticker" id="play-ticker">
+                <p><b>Recent Plays:</b></p>
+                <p id="play3">- 5 yard run!</p>
+                <p id="play2">- 2 yard run for a first down!</p>
+                <p id="play1"></p>
+                <p id="play0"></p>
+            </div>
+
+        </div>
+        
+        <!--Bootstrap core JavaScript
+        =================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> -->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script src="https://d3js.org/d3.v4.min.js"></script>
+
+        <!-- Include socket file from this domain. -->
+        <script src="http://socketio.minilabs.co/socket.io/socket.io.js"></script>
+        <script>    
+            $(function() {
+                // Create the socket on this domain!
+                var socket = io('http://socketio.minilabs.co');
+
+                //pick id that is unique. id must be the same for both pages.
+                var id = 'gbushong';
+
+                //Register your id.
+                socket.emit('register', id);
+
+                // a listener 'listening' to this channel (gbushong-period) receives this data and updates the interface with the correct period
+
+                var clock_time = "15:00";
+                var c_split = clock_time.split(":");
+                var minutes = c_split[0];
+                var seconds = c_split[1];
+                var clock_run = 0;
+
+                // Timer stuff
+                var x = setInterval(function() {
+                    if (clock_run == 1) {
+                        if (seconds == 0) {
+                            seconds = 59;
+                            minutes -= 1;
+                        }
+                        else {
+                            seconds -= 1;
+                        }
+                        
+                        document.getElementById("clock").innerHTML = minutes + ":" + seconds;
+
+                        if (minutes < 0  || (minutes == 0 && seconds <= 0)) {
+                            document.getElementById("clock").innerHTML = "GAME OVER";
+                            clock_run = 0;
+                        }
+                    }
+                }, 1000);
+
+                // Source: https://developer.mozilla.org/en-US/docs/Web/API/notification
+                function notifyMe(data) {
+                    // check if browser supports notifications
+                    if (!("Notification" in window)) {
+                        alert("This browser does not support desktop notification");
+                    }
+                    // check notification permissions
+                    else if (Notification.permission === "granted") {
+                        // create notification
+                        var notification = new Notification(data);
+                    }
+
+                    //ask for permission
+                    else if (Notification.permission !== "denied") {
+                        Notification.requestPermission(function (permission) {
+                            // create notification
+                            if (permission === "granted") {
+                                var notification = new Notification(data);
+                            }
+                        });
+                    }
+                    // if they denied notifications, don't do anything
+                }
+                
+                // Team Name
+                socket.on(id + '-teams', function(data) {
+                    // Change id: home-team and id: away-team data
+                    console.log("Team Name change");
+                    notifyMe("Team Name changed");
+                    $('#home-team').text(data.Home);
+                    $('#away-team').text(data.Away);
+                });
+
+                // Possession Arrow ** Transmits
+                socket.on(id + '-possession', function(data) {
+                    // sends 1 or 0
+                    // Change i class from arrow left to arrow right
+                    console.log("Possession change");
+                    notifyMe("Possession changed");
+                    var div = '';
+                    if (data == 1) {
+                        //$("i.right").border("none");
+                        //$("i.left").border("solid black");
+                        div = document.getElementById('right');
+                        div.style.border = 'none';
+                        div = document.getElementById('left');
+                        div.style.border = 'solid black';
+                        div.style.borderWidth = '0 3px 3px 0'
+                    }
+                    else {
+                        div = document.getElementById('left');
+                        div.style.border = 'none';
+                        div = document.getElementById('right');
+                        div.style.border = 'solid black';
+                        div.style.borderWidth = '0 3px 3px 0'
+                    }
+                });
+
+                // Team Score
+                socket.on(id + '-score', function(data) {
+                    // Update id:home-score and away-score
+                    console.log("Home Score Change");
+                    notifyMe("Home Score Changed");
+                    document.getElementById('home-score').innerHTML = data.Home;
+
+                });
+                socket.on(id + '-score', function(data) {
+                    console.log("Away Score Change");
+                    notifyMe("Away Score Changed");
+                    document.getElementById('away-score').innerHTML = data.Away;
+                });
+
+                //Period Indicator ** Works
+                socket.on(id + '-period', function(data) {
+                    // reset all period boxes to blank
+                    var div = document.getElementById('period-1');
+                    div.style.border = 'none';                    
+                    var div = document.getElementById('period-2');
+                    div.style.border = 'none';                    
+                    var div = document.getElementById('period-3');
+                    div.style.border = 'none';
+                    var div = document.getElementById('period-4');
+                    div.style.border = 'none';
+                    var div = document.getElementById('period-OT');
+                    div.style.border = 'none';
+
+                    // Update id: period
+                    var div_name = 'period-' + data;
+                    console.log(div_name);
+                    notifyMe("Period changed");
+                    var div = document.getElementById(div_name);
+                    div.style.border = '5px solid black';
+                });
+
+                // Clock
+                socket.on(id + '-clock', function(data) {
+                    // Update id: clock
+                    console.log("Time change: " + data);
+                    notifyMe("Time changed");
+                    clock_time = data;
+                    c_split = clock_time.split(":");
+                    minutes = c_split[0];
+                    seconds = c_split[1];
+                    document.getElementById("clock").innerHTML = minutes + ":" + seconds;
+                });
+
+                // Play/ Pause Clock
+                socket.on(id + '-play', function(data) {
+                    // 1 = run clock, 0 = stop clock
+                    if (data == 1) {
+                        console.log("Play Clock");
+                        notifyMe("Play Clock");
+                    }
+                    else if (data == 0) {
+                        console.log("Pause Clock");
+                        notifyMe("Pause Clock");
+                    }
+                    clock_run = data;
+                })
+
+                // Timeouts
+                socket.on(id + '-timeouts', function(data) {
+                    // Update id: home-timeouts
+                    console.log("Home Timeout change: " + data.Home);
+                    notifyMe("Home Timeouts Changed");
+                    console.log("Away timeout change: " + data.Away);
+                    notifyMe("Away timeouts changed");
+
+                    // Home Timeouts
+                    if (data.Home == 3) {
+                        document.getElementById('home-timeouts3').style.background = 'blue';
+                        document.getElementById('home-timeouts2').style.background = 'blue';
+                        document.getElementById('home-timeouts1').style.background = 'blue';
+                    }
+                    else if (data.Home == 2) {
+                        document.getElementById('home-timeouts3').style.background = 'grey';
+                        document.getElementById('home-timeouts2').style.background = 'blue';
+                        document.getElementById('home-timeouts1').style.background = 'blue';
+                    }
+                    else if (data.Home == 1) {
+                        document.getElementById('home-timeouts3').style.background = 'grey';
+                        document.getElementById('home-timeouts2').style.background = 'grey';
+                        document.getElementById('home-timeouts1').style.background = 'blue';
+                    }
+                    else {
+                        document.getElementById('home-timeouts3').style.background = 'grey';
+                        document.getElementById('home-timeouts2').style.background = 'grey';
+                        document.getElementById('home-timeouts1').style.background = 'grey';
+                    }
+                    
+                    // Away Timeouts
+                    if (data.Away == 3) {
+                        document.getElementById('away-timeouts3').style.background = 'blue';
+                        document.getElementById('away-timeouts2').style.background = 'blue';
+                        document.getElementById('away-timeouts1').style.background = 'blue';
+                    }
+                    else if (data.Away == 2) {
+                        document.getElementById('away-timeouts3').style.background = 'grey';
+                        document.getElementById('away-timeouts2').style.background = 'blue';
+                        document.getElementById('away-timeouts1').style.background = 'blue';
+                    }
+                    else if (data.Away == 1) {
+                        document.getElementById('away-timeouts3').style.background = 'grey';
+                        document.getElementById('away-timeouts2').style.background = 'grey';
+                        document.getElementById('away-timeouts1').style.background = 'blue';
+                    }
+                    else {
+                        document.getElementById('away-timeouts3').style.background = 'grey';
+                        document.getElementById('away-timeouts2').style.background = 'grey';
+                        document.getElementById('away-timeouts1').style.background = 'grey';
+                    }
+                });
+
+
+                // Total Yards
+                socket.on(id + '-yards', function(data) {
+                    // Update id: home-yards
+                    console.log("Total Yards change");
+                    notifyMe("Total Yards changed");
+                    data = [data.Home, data.Away];
+                    var svg = d3.select("#bar").append("svg").attr("width", 960).attr("height", 100);
+                    svg.selectAll(".bar")
+                        .data(data)
+                        .enter()
+                        .append("rect")
+                        .attr("class", "bar")
+                        .attr("x", 0)
+                        .attr("y", function(d, i) { return i*60})
+                        .attr("width", function(d) {return d*50})
+                        .attr("height", 50)
+                        .attr("fill", "blue");
+
+                    svg.append("text")
+                        .attr("x", 5)
+                        .attr("y", 25)
+                        .style("text-anchor", "left")
+                        .text("Home");
+
+                    svg.append("text")
+                        .attr("x", 5)
+                        .attr("y", 80)
+                        .style("text-anchor", "left")
+                        .text("Away");
+                });
+
+
+                // Recent Plays
+                socket.on(id + '-plays', function(data) {
+                    // Update id: ticker 
+                    console.log("Recent Play change");
+                    notifyMe("Recent Plays changed");
+                    document.getElementById('play3').innerHTML = document.getElementById('play2').innerHTML;
+                    document.getElementById('play2').innerHTML = document.getElementById('play1').innerHTML;
+                    document.getElementById('play1').innerHTML = document.getElementById('play0').innerHTML;
+                    document.getElementById('play0').innerHTML = data;
+                });
+
+            });
+        </script>
+    </body>
+</html>

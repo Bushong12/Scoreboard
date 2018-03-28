@@ -1,3 +1,4 @@
+# Scoreboard
 Grace Bushong
 Homework #4
 Resubmission: September 20, 2017
@@ -12,4 +13,3 @@ Run Clock allows the user to either stop or start the clock. The clock will not 
 Timeouts remaining allows a user to indicate that a team has from 0 to 3 timeouts remaining. Like the team name values, these must be changed together. The number of timeouts remaining will be highlighted blue on the display page.
 Total Yards allows the user to enter in total Yards for each team in the same manner as Team Score. The graph showing the yards will not appear until some yards are entered, but then it will label the home and away graphs.
 New play allows the user to enter a recent play that was made which will appear on the play ticker. The play ticker only shows the four most recent plays and will stop showing plays after there have been four new ones entered.
-# Scoreboard
